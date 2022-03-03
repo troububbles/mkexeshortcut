@@ -39,7 +39,6 @@ The currently supported locales are:
 * zh - Chinese (Traditional)
 
 ### License
-mkExeDesktopShortcut  
 Copyright (C) 2022 Félix Dionísio Xavier Pedro
 
 This program is free software: you can redistribute it and/or modify
