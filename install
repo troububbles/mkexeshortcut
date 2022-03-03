@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if (( ! id -u )); then
+    echo -e "\e[1m\e[1;33m"
+    cp -rv ./usr /
+else
+    echo -e "\e[1m\e[31mPlease run the install script as root.\e[0m"
+fi
+
+echo -e "\e[1m\e[32mFinished installation.\e[0m"
