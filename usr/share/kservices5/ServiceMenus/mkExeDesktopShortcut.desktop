@@ -1,7 +1,13 @@
-[Desktop Action makeWinExeDesktopFile]
-Exec=konsole --hold -e mkExeDesktopShortcut "%U"
-Icon=application-x-ms-shortcut
-Name[pt_BR]=Criar atalho na área de trabalho
+[Desktop Entry]
+Actions=mkExeDesktopShortcut
+MimeType=application/x-ms-dos-executable
+ServiceTypes=KonqPopupMenu/Plugin
+Icon=insert-link
+Type=Service
+
+[Desktop Action mkExeDesktopShortcut]
+Exec=mkExeDesktopShortcut "%U"
+Icon=insert-link
 Name=Create desktop shortcut
 Name[ar]=إنشاء اختصار سطح المكتب
 Name[cs]=Vytvořit zástupce na ploše
@@ -20,16 +26,10 @@ Name[is]=Opret genvej på skrivebordet
 Name[it]=Crea una scorciatoia sul desktop
 Name[lt]=Sukurti nuorodą darbalaukyje
 Name[pl]=Utwórz skrót na pulpicie
+Name[pt]=Criar atalho na área de trabalho
 Name[ru]=Создать ярлык на рабочем столе
 Name[sv]=Skapa skrivbordsgenväg
 Name[th]=สร้างทางลัดบนเดสก์ท็อป
 Name[uk]=Створити ярлик на робочому столі
 Name[vi]=Tạo lối tắt trên màn hình
 Name[zh]=創建桌面快捷方式
-
-[Desktop Entry]
-Actions=makeWinExeDesktopFile
-Icon=insert-link
-MimeType=application/x-ms-dos-executable
-ServiceTypes=KonqPopupMenu/Plugin
-Type=Service
