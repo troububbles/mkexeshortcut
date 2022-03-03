@@ -1,10 +1,20 @@
 #!/bin/bash
 
-if [[ $# < 1 ]]; then
-    echo -e "\e[1m\e[31mMissing input file.\e[0m
-    \e[1mSyntax:\e[0m \e[3mmkExeDesktopShortcut <filename>\e[0m"
+if [ ! $(command -v wrestool) ]; then
+    echo -e "\e[1m\e[31mERROR: Missing dependency\e[0m \e[3m\e[96micoutils\e[0m\e[1m\e[31m.\e[0m"
     exit
 fi
+
+if [ $(id -u) == 0 ]; then
+    echo -e "\e[1m\e[31mERROR: Refusing to run\e[0m \e[3m\e[96mmkExeDesktopShortcut\e[0m\e[1m\e[31m as root.\e[0m"
+    exit
+fi
+
+if [[ $# < 1 ]]; then
+    echo -e "\e[1m\e[31mERROR: Missing input file.\e[0m\n\e[1mUsage:\e[0m \e[3mmkExeDesktopShortcut <filename>\e[0m"
+    exit
+fi
+
 
 input=$1
 
