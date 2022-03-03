@@ -38,7 +38,7 @@ The currently supported locales are:
 * vi - Vietnamese
 * zh - Chinese (Traditional)
 
-### GPL v3.0
+### License
 mkExeDesktopShortcut  
 Copyright (C) 2022 Félix Dionísio Xavier Pedro
 
