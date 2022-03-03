@@ -2,7 +2,7 @@
 A bash script and service menu option for generating desktop shortcuts from Windows executables on Linux.  
 Usage: *mkExeDesktopShortcut \<executable\>*
 
-### Dependencies
+### Dependency
 icoutils - https://github.com/rwmjones/icoutils
  
 ### Localization
