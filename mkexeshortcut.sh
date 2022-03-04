@@ -1,18 +1,18 @@
-#!/bin/bash
+    #!/bin/bash
 
 if [ ! $(command -v wrestool) ]; then
     echo -e "\e[1m\e[31mERROR: Missing dependency\e[0m \e[3m\e[96micoutils\e[0m\e[1m\e[31m.\e[0m"
-    exit
+    exit 3
 fi
 
 if [ $(id -u) == 0 ]; then
-    echo -e "\e[1m\e[31mERROR: Refusing to run\e[0m \e[3m\e[96mmkExeDesktopShortcut\e[0m\e[1m\e[31m as root.\e[0m"
-    exit
+    echo -e "\e[1m\e[31mERROR: Refusing to run\e[0m \e[3m\e[96mmkExeShortcut\e[0m\e[1m\e[31m as root.\e[0m"
+    exit 4
 fi
 
 if [[ $# < 1 ]]; then
-    echo -e "\e[1m\e[31mERROR: Missing input file.\e[0m\n\e[1mUsage:\e[0m \e[3mmkExeDesktopShortcut <filename>\e[0m"
-    exit
+    echo -e "\e[1m\e[31mERROR: Missing input file.\e[0m\n\e[1mUsage:\e[0m \e[3mmkExeShortcut <filename>\e[0m"
+    exit 5
 fi
 
 input=$1
@@ -21,21 +21,42 @@ if ( file --mime-type "$input" | grep -o "application/x-dosexec" >/dev/null ); t
     echo -e "\e[1m\e[1;33mWorking on file:\e[0m \e[3m\e[96m\"$input\"\e[0m\e[1m\e[1;33m."
 else
     echo -e "\e[1m\e[31mERROR: File is not a Windows executable:\e[0m \e[3m\e[96m\"$input\"\e[0m\e[1m\e[31m."
-    exit
+    exit 6
 fi
 
 input_folder=${input%/*}
 
 if [ ! -w "$input_folder" ]; then
-    echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$input_folder\"\e[0m\e[1m\e[31m."
-    exit
+    echo -e "\e[1m\e[31mERROR: Input folder is not writable:\e[0m \e[3m\e[96m\"$input_folder\"\e[0m\e[1m\e[31m."
+    exit 7
 fi
 
 input_filename=${input##*/}
 input_title=$(echo ${input_filename%.exe} | sed -s "s/_/ /g")
 
+output="$HOME/Desktop/$input_title.desktop"
+
+if [ $# == 2 ]; then
+    if [ -d $2 ]; then
+        if [ -w $2 ]; then
+            output="$2/$input_title.desktop"
+        else
+            echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m."
+            exit 8
+        fi
+    else
+        echo -e "\e[1m\e[31mERROR: Parameter is not a folder:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m."
+        exit 9
+    fi
+fi
+
+echo -e "\e[1m\e[32mYou're good to go.\e[0m"
+
 echo -e "\e[1m\e[95mCMD PARAMS
-| FILENAME\e[0m \e[3m\e[96m$input_filename\e[0m \n\e[1m\e[95m| FOLDER\e[0m   \e[3m\e[96m$input_folder\e[0m \n\e[1m\e[95m| TITLE\e[0m    \e[3m\e[96m$input_title\e[0m"
+| FILENAME\e[0m \e[3m\e[96m$input_filename\e[0m \e[1m\e[95m
+| FOLDER\e[0m   \e[3m\e[96m$input_folder\e[0m \e[1m\e[95m
+| TITLE\e[0m    \e[3m\e[96m$input_title\e[0m \e[1m\e[95m
+| OUTPUT\e[0m   \e[3m\e[96m$output\e[0m"
 
 echo -e "\e[1m\e[1;33mExtracting icon resources from executable.\e[0m"
 
@@ -87,7 +108,8 @@ Comment[hy]=Սկսել $input_title
 Comment[id]=Luncurkan $input_title
 Comment[is]=Ræstu $input_title
 Comment[lt]=Palaist $input_title
-Comment[pl]=$input_title starten
+Comment[nl]=$input_title starten
+Comment[pl]=Uruchom $input_title
 Comment[pt]=Iniciar $input_title
 Comment[ru]=Запустить $input_title
 Comment[sv]=Starta $input_title
@@ -96,20 +118,23 @@ Comment[uk]=Запустіть $input_title
 Comment[vi]=Khởi chạy $input_title
 Comment[zh]=启动$input_title
 StartupNotify=true
-Terminal=false" > "$HOME/Desktop/$input_title.desktop"
+Terminal=false" > "$output"
 
-if [ ! -f "$HOME/Desktop/$input_title.desktop" ]; then
-    echo -e "\e[1m\e[31mERROR: The file\e[0m \e[3m\e[96m\"$HOME/Desktop/$input_title.desktop\"\e[0m \e[1m\e[31mcould not be created.\e[0m"
-    exit
+if [ ! -f "$output" ]; then
+    echo -e "\e[1m\e[31mERROR: The file\e[0m \e[3m\e[96m\"$output\"\e[0m \e[1m\e[31mcould not be created.\e[0m"
+    exit 10
 fi
 
-echo -e "\e[1m\e[1;33mSetting shortcut execute permission.\e[0m"
+echo -e "\e[1m\e[1;33mSetting execute permissions.\e[0m"
 
-chmod +x "$HOME/Desktop/$input_title.desktop"
+chmod +x "$input"
+chmod +x "$output"
 
 if [[ $? > 0 ]]; then
-    echo -e "\e[1m\e[31mERROR: couldn't set shortcut execute permission.\e[0m ($?)"
-    exit
+    echo -e "\e[1m\e[31mERROR: couldn't set execute permission.\e[0m ($?)"
+    exit 11
 else
-    echo -e "\e[1m\e[32mDesktop shortcut successfully generated on\e[0m \e[3m\e[96m\"$HOME/Desktop/$input_title.desktop\"\e[1m\e[32m.\e[0m"
+    echo -e "\e[1m\e[32mShortcut successfully generated on\e[0m \e[3m\e[96m\"$output\"\e[1m\e[32m.\e[0m"
 fi
+
+exit 0
