@@ -1,6 +1,6 @@
 # mkexeshortcut
 A bash script and service menu option for generating desktop shortcuts from Windows executables on Linux.
-Usage: *mkexeshortcut \<executable\> \<shortcut destination\>*
+Usage: *mkexeshortcut \<executable\> \<output folder\>*
 
 ### Dependency
 icoutils - https://github.com/rwmjones/icoutils
