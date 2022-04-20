@@ -1,4 +1,4 @@
-    #!/bin/bash
+#!/bin/bash
 
 if [ ! $(command -v wrestool) ]; then
     echo -e "\e[1m\e[31mERROR: Missing dependency\e[0m \e[3m\e[96micoutils\e[0m\e[1m\e[31m.\e[0m"
@@ -10,51 +10,50 @@ if [ $(id -u) == 0 ]; then
     exit 4
 fi
 
-if [[ $# < 1 ]]; then
-    echo -e "\e[1m\e[31mERROR: Missing input file.\e[0m\n\e[1mUsage:\e[0m \e[3mmkExeShortcut <filename>\e[0m"
+if [[ $# < 1 || $# > 2 ]]; then
+    echo -e "\e[1m\e[31mERROR: Incorrect number of arguments.\e[0m\n\e[1mUsage:\e[0m \e[3mmkexeshortcut <filename> [output]\e[0m\e[1m\e[31m.\e[0m"
     exit 5
 fi
 
 input="$1"
 
 if ( file --mime-type "$input" | grep -o "application/x-dosexec" >/dev/null ); then
-    echo -e "\e[1m\e[1;33mWorking on file:\e[0m \e[3m\e[96m\"$input\"\e[0m\e[1m\e[1;33m."
+    echo -e "\e[1m\e[1;33mWorking on file:\e[0m \e[3m\e[96m\"$input\"\e[0m\e[1m\e[1;33m.\e[0m"
 else
-    echo -e "\e[1m\e[31mERROR: File is not a Windows executable:\e[0m \e[3m\e[96m\"$input\"\e[0m\e[1m\e[31m."
+    echo -e "\e[1m\e[31mERROR: File is not a Windows executable:\e[0m \e[3m\e[96m\"$input\"\e[0m\e[1m\e[31m.\e[0m"
     exit 6
 fi
 
 input_folder=${input%/*}
 
 if [ ! -w "$input_folder" ]; then
-    echo -e "\e[1m\e[31mERROR: Input folder is not writable:\e[0m \e[3m\e[96m\"$input_folder\"\e[0m\e[1m\e[31m."
+    echo -e "\e[1m\e[31mERROR: Input folder is not writable:\e[0m \e[3m\e[96m\"$input_folder\"\e[0m\e[1m\e[31m.\e[0m"
     exit 7
 fi
 
 input_filename=${input##*/}
 input_title=$(echo ${input_filename%.exe} | sed -s "s/_/ /g")
 
-# Search for user's desktop
-desktop="$HOME/Desktop"
-if [[ -n "$(xdg-user-dir DESKTOP)" ]]
-then
-    desktop="$(xdg-user-dir DESKTOP)"
-fi
-
+# Search for user's desktop #
+desktop="$(xdg-user-dir DESKTOP)"
 output="$desktop/$input_title.desktop"
 
+# If a second argument was given, interpret it as the output location. #
 if [ $# == 2 ]; then
     if [ -d "$2" ]; then
         if [ -w "$2" ]; then
             output="$2/$input_title.desktop"
         else
-            echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m."
+            echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m.\e[0m"
             exit 8
         fi
     else
-        echo -e "\e[1m\e[31mERROR: Parameter is not a folder:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m."
+        echo -e "\e[1m\e[31mERROR: Parameter is not a folder:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m.\e[0m"
         exit 9
     fi
+elif [ ! -w $output ]; then
+    echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$output\"\e[0m\e[1m\e[31m.\e[0m"
+    exit 8
 fi
 
 echo -e "\e[1m\e[32mYou're good to go.\e[0m"
