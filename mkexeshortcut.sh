@@ -51,8 +51,8 @@ if [ $# == 2 ]; then
         echo -e "\e[1m\e[31mERROR: Parameter is not a folder:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m.\e[0m"
         exit 9
     fi
-elif [ ! -w $output ]; then
-    echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$output\"\e[0m\e[1m\e[31m.\e[0m"
+elif [ ! -w $desktop ]; then
+    echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$desktop\"\e[0m\e[1m\e[31m.\e[0m"
     exit 8
 fi
 
