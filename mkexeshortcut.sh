@@ -15,7 +15,7 @@ if [[ $# < 1 ]]; then
     exit 5
 fi
 
-input=$1
+input="$1"
 
 if ( file --mime-type "$input" | grep -o "application/x-dosexec" >/dev/null ); then
     echo -e "\e[1m\e[1;33mWorking on file:\e[0m \e[3m\e[96m\"$input\"\e[0m\e[1m\e[1;33m."
@@ -34,11 +34,18 @@ fi
 input_filename=${input##*/}
 input_title=$(echo ${input_filename%.exe} | sed -s "s/_/ /g")
 
-output="$HOME/Desktop/$input_title.desktop"
+# Search for user's desktop
+desktop="$HOME/Desktop"
+if [[ -n "$(xdg-user-dir DESKTOP)" ]]
+then
+    desktop="$(xdg-user-dir DESKTOP)"
+fi
+
+output="$desktop/$input_title.desktop"
 
 if [ $# == 2 ]; then
-    if [ -d $2 ]; then
-        if [ -w $2 ]; then
+    if [ -d "$2" ]; then
+        if [ -w "$2" ]; then
             output="$2/$input_title.desktop"
         else
             echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m."

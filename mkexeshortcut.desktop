@@ -65,7 +65,7 @@ Name[vi]=Tạo lối tắt trên màn hình
 Name[zh]=創建桌面快捷方式
 
 [Desktop Action mkExeShortcut]
-Exec=$HOME/.local/share/kservices5/mkexeshortcut/mkexeshortcut.sh "%u" $PWD
+Exec=$HOME/.local/share/kservices5/mkexeshortcut/mkexeshortcut.sh "%u" "$PWD"
 Icon=insert-link
 Name=Create shortcut here
 Name[ar]=إنشاء اختصار هنا
