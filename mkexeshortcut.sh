@@ -134,11 +134,17 @@ fi
 echo -e "\e[1m\e[1;33mSetting execute permissions.\e[0m"
 
 chmod +x "$input"
+
+if [[ $? > 0 ]]; then
+    echo -e "\e[1m\e[31mERROR: couldn't set executable permission for input file.\e[0m ($?)"
+    exit 11
+fi
+
 chmod +x "$output"
 
 if [[ $? > 0 ]]; then
-    echo -e "\e[1m\e[31mERROR: couldn't set execute permission.\e[0m ($?)"
-    exit 11
+    echo -e "\e[1m\e[31mERROR: couldn't set executable permission for output file.\e[0m ($?)"
+    exit 12
 else
     echo -e "\e[1m\e[32mShortcut successfully generated on\e[0m \e[3m\e[96m\"$output\"\e[1m\e[32m.\e[0m"
 fi
