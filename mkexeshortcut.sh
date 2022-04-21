@@ -6,13 +6,18 @@ if [ ! $(command -v wrestool) ]; then
 fi
 
 if [ $(id -u) == 0 ]; then
-    echo -e "\e[1m\e[31mERROR: Refusing to run\e[0m \e[3m\e[96mmkExeShortcut\e[0m\e[1m\e[31m as root.\e[0m"
+    echo -e "\e[1m\e[31mERROR: Refusing to run\e[0m \e[3m\e[96mmkexeshortcut\e[0m\e[1m\e[31m as root.\e[0m"
     exit 4
 fi
 
 if [[ $# < 1 || $# > 2 ]]; then
-    echo -e "\e[1m\e[31mERROR: Incorrect number of arguments.\e[0m\n\e[1mUsage:\e[0m \e[3mmkexeshortcut <filename> [output]\e[0m\e[1m\e[31m.\e[0m"
+    echo -e "\e[1m\e[31mERROR: Incorrect number of arguments.\e[0m\n\e[1mUsage:\e[0m \e[3mmkexeshortcut <input_file> [output_folder]\e[0m\e[1m\e[31m.\e[0m"
     exit 5
+fi
+
+if [[ $1 == "--usage" || $1 == "-u" || $1 == "--help" || $1 == "-h" ]]; then
+    echo "\e[1mUsage:\e[0m \e[3mmkexeshortcut <input_file> [output_folder]\e[0m\e[1m\e[31m.\e[0m\nBy default, the output folder is set to the user's desktop directory. (\e[3mxdg-user-dir DESKTOP\e[0m)"
+    exit 0
 fi
 
 input="$1"
@@ -56,15 +61,13 @@ elif [ ! -w $desktop ]; then
     exit 8
 fi
 
-echo -e "\e[1m\e[32mYou're good to go.\e[0m"
-
-echo -e "\e[1m\e[95mCMD PARAMS
+echo -e "\e[1m\e[32mYou're good to go.\e[0m
+\e[1m\e[95mCMD PARAMS
 | FILENAME\e[0m \e[3m\e[96m$input_filename\e[0m \e[1m\e[95m
 | FOLDER\e[0m   \e[3m\e[96m$input_folder\e[0m \e[1m\e[95m
 | TITLE\e[0m    \e[3m\e[96m$input_title\e[0m \e[1m\e[95m
-| OUTPUT\e[0m   \e[3m\e[96m$output\e[0m"
-
-echo -e "\e[1m\e[1;33mExtracting icon resources from executable.\e[0m"
+| OUTPUT\e[0m   \e[3m\e[96m$output\e[0m
+\e[1m\e[1;33mExtracting icon resources from executable.\e[0m"
 
 wrestool --type=-14 --extract --output="$input_folder/$input_title.ico" "$input"
 if [[ $? > 0 ]]; then
@@ -131,7 +134,7 @@ if [ ! -f "$output" ]; then
     exit 10
 fi
 
-echo -e "\e[1m\e[1;33mSetting execute permissions.\e[0m"
+echo -e "\e[1m\e[1;33mSetting executable permissions.\e[0m"
 
 chmod +x "$input"
 
