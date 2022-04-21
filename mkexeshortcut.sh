@@ -16,7 +16,7 @@ if [[ $# < 1 || $# > 2 ]]; then
 fi
 
 if [[ $1 == "--usage" || $1 == "-u" || $1 == "--help" || $1 == "-h" ]]; then
-    echo "\e[1mUsage:\e[0m \e[3mmkexeshortcut <input_file> [output_folder]\e[0m\e[1m\e[31m.\e[0m\nBy default, the output folder is set to the user's desktop directory. (\e[3mxdg-user-dir DESKTOP\e[0m)"
+    echo "\e[1mUsage:\e[0m \e[3mmkexeshortcut <input_file> [output_folder]\e[0m\nBy default, the output folder is set to the user's desktop directory. (\e[3mxdg-user-dir DESKTOP\e[0m)"
     exit 0
 fi
 
