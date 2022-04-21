@@ -72,8 +72,6 @@ echo -e "\e[1m\e[32mYou're good to go.\e[0m
 wrestool --type=-14 --extract --output="$input_folder/$input_title.ico" "$input"
 if [[ $? > 0 ]]; then
     echo -e "\e[1m\e[31mAn error has occurred while extracting resources.\e[0m ($?)"
-else
-    echo -e "\e[1m\e[32mFinished extracting resources.\e[0m"
 fi
 
 icon_path="$input_folder/$input_title.ico"
@@ -85,6 +83,9 @@ else
     echo -e "\e[1m\e[1;33mTrying to extract alternative icons.\e[0m"
 
     wrestool --type=-3 --extract --output="$input_folder/$input_title.ico" "$input"
+    if [[ $? > 0 ]]; then
+        echo -e "\e[1m\e[31mAn error has occurred while extracting resources.\e[0m ($?)"
+    fi
 
     if ( file --mime-type "$icon_path" | grep -o "image/" >/dev/null ); then
         echo -e "\e[1m\e[32mSelected icon file:\e[0m \e[3m\e[96m\"$icon_path\"\e[0m\e[1m\e[32m.\e[0m"
@@ -93,6 +94,8 @@ else
     fi
 fi
 
+echo -e "\e[1m\e[32mFinished extracting resources.\e[0m"
+    
 echo "[Desktop Entry]
 Type=Application
 MimeType=application/x-dosexec
