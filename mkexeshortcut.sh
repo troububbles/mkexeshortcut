@@ -35,7 +35,8 @@ input_filename=${input##*/}
 input_title=$(echo ${input_filename%.exe} | sed -s "s/_/ /g")
 
 # Search for user's desktop #
-output="$(xdg-user-dir DESKTOP)/$input_title.desktop"
+desktop="$(xdg-user-dir DESKTOP)"
+output="$desktop/$input_title.desktop"
 
 # If a second argument was given, interpret it as the output location. #
 if [ $# == 2 ]; then
@@ -50,8 +51,8 @@ if [ $# == 2 ]; then
         echo -e "\e[1m\e[31mERROR: Parameter is not a folder:\e[0m \e[3m\e[96m\"$2\"\e[0m\e[1m\e[31m.\e[0m"
         exit 9
     fi
-elif [ ! -w $output ]; then
-    echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$output\"\e[0m\e[1m\e[31m.\e[0m"
+elif [ ! -w $desktop ]; then
+    echo -e "\e[1m\e[31mERROR: Folder is not writable:\e[0m \e[3m\e[96m\"$desktop\"\e[0m\e[1m\e[31m.\e[0m"
     exit 8
 fi
 
